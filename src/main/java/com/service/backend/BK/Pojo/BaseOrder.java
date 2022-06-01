@@ -9,8 +9,13 @@ public class BaseOrder {
      private String id;
      private String description;
      private Double desideredPrice;
+     //Pending,active,Rejected,Hault,etc etc
+     private String status;
 
-
+     public BaseOrder(String description, Double desideredPrice) {
+          this.description = description;
+          this.desideredPrice = desideredPrice;
+     }
 
      public String getId() {
           return id;

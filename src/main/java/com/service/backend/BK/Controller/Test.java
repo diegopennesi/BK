@@ -1,12 +1,15 @@
 package com.service.backend.BK.Controller;
 
-import com.service.backend.BK.Pojo.SimpleOrder;
+import com.service.backend.BK.Constants.Constant;
+import com.service.backend.BK.Pojo.BaseOrder;
+import com.service.backend.BK.Pojo.DetailedOrder;
 import com.service.backend.BK.Service.Test1Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,6 +31,9 @@ public class Test {
     @GetMapping("mongowrite")
     public void mongowrite(){
         testService.insert(new com.service.backend.BK.Pojo.Test("id999","testInsert"));
-      //  SimpleOrder sp = new SimpleOrder();
+        BaseOrder bs=new BaseOrder("Test1",90.0000);
+        List<Integer> listt= new ArrayList<>();
+        listt.add(3);
+        DetailedOrder dt= new DetailedOrder(bs,listt,9, Constant.Quality.MINT);
     }
 }
