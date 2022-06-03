@@ -1,28 +1,38 @@
 package com.service.backend.BK.Pojo;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("baseOrder")
 public class BaseOrder {
-     @Id
-     private String id;
+
+
+     private String baseOrderId;
      private String description;
      private Double desideredPrice;
      //Pending,active,Rejected,Hault,etc etc
-     private String status;
+     private int status;
 
-     public BaseOrder(String description, Double desideredPrice) {
+     protected  BaseOrder(){}
+     protected  BaseOrder(String description, Double desideredPrice) {
+          this.baseOrderId ="5555";
           this.description = description;
           this.desideredPrice = desideredPrice;
      }
-
-     public String getId() {
-          return id;
+     public String returnBaseOrder(){
+          return "BaseOrder{" +
+                  "id='" + baseOrderId + '\'' +
+                  ", description='" + description + '\'' +
+                  ", desideredPrice=" + desideredPrice +
+                  ", status=" + status +
+                  '}';
      }
 
-     public void setId(String id) {
-          this.id = id;
+     public String getBaseOrderId() {
+          return baseOrderId;
+     }
+
+     public void setBaseOrderId(String baseOrderId) {
+          this.baseOrderId = baseOrderId;
      }
 
      public String getDescription() {
@@ -39,5 +49,13 @@ public class BaseOrder {
 
      public void setDesideredPrice(Double desideredPrice) {
           this.desideredPrice = desideredPrice;
+     }
+
+     public int getStatus() {
+          return status;
+     }
+
+     public void setStatus(int status) {
+          this.status = status;
      }
 }

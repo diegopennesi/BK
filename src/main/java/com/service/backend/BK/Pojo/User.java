@@ -27,6 +27,6 @@ public class User {
     private List<Address> addresses;
     private String lastJWT;
     private DateTime lastLogin;
-    private MultiValueMap<String,SimpleOrder> orderListSimple;
+    private MultiValueMap<String,BaseOrder> orderListSimple;
 
 }

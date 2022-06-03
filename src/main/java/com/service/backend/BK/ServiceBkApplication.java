@@ -1,5 +1,7 @@
 package com.service.backend.BK;
 
+import com.service.backend.BK.Pojo.DetailedOrder;
+import com.service.backend.BK.Repository.DetailedOrderRepository;
 import com.service.backend.BK.Repository.Test1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +15,8 @@ public class ServiceBkApplication{
 
 	@Autowired
 	Test1Repository Test1Repo;
+	@Autowired
+	DetailedOrderRepository DetailedOrderService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceBkApplication.class, args);

@@ -16,5 +16,6 @@ public class Test1Service {
     }
 
     public void insert(Test test) {repo.insert(test);
+
     }
 }
