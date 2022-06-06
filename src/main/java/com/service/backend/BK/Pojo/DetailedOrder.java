@@ -1,6 +1,7 @@
 package com.service.backend.BK.Pojo;
 
 import com.service.backend.BK.Constants.Constant;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -8,9 +9,9 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 @Document("Orders")
-public class DetailedOrder extends BaseOrder {
+public class DetailedOrder {
 
-    @MongoId
+    @Id
     private String id;
    // private BaseOrder baseOrder;
     @Field
@@ -25,7 +26,6 @@ public class DetailedOrder extends BaseOrder {
 
     public DetailedOrder(){}
     public DetailedOrder(String Description,Double price, List<Integer> category, Integer quality) {
-        super();
         this.category = category;
         this.quality = quality;
         this.qualityDescription = qualityDescriptionPairFactory(quality);
@@ -33,12 +33,7 @@ public class DetailedOrder extends BaseOrder {
     }
 
 
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
+
     public List<Integer> getCategory() {
         return category;
     }
@@ -65,15 +60,16 @@ public class DetailedOrder extends BaseOrder {
             case 5:return Constant.Quality.LIGHTDMN.label;
             case 6:return Constant.Quality.GOOD.label;
             case 7:return Constant.Quality.EXCELENT.label;
-            case 8:return Constant.Quality.MINT.label;
-            case 9:return Constant.Quality.NEWUNRL.label;
+            case 8:return Constant.Quality.NEARMINT.label;
+            case 9:return Constant.Quality.MINT.label;
+            case 10:return Constant.Quality.NEWUNRL.label;
             default:return Constant.Quality.NOGRAD.label;        }
     }
     @Override
     public String toString() {
         return "DetailedOrder{" +
                 "id='" + id + '\'' +
-                "baseOrder='" + baseOrder + '\'' +
+                ", baseOrder='" + getBaseOrder().returnBaseOrder() + '\'' +
                 ", category=" + category +
                 ", quality=" + quality +
                 ", qualityDescription='" + qualityDescription + '\'' +
@@ -86,5 +82,9 @@ public class DetailedOrder extends BaseOrder {
 
     public void setBaseOrder(BaseOrder baseOrder) {
         this.baseOrder = baseOrder;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

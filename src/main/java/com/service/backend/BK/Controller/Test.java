@@ -7,6 +7,7 @@ import com.service.backend.BK.Pojo.DetailedOrder;
 import com.service.backend.BK.Repository.DetailedOrderRepository;
 import com.service.backend.BK.Service.Test1Service;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.boot.json.JsonParser;
@@ -43,20 +44,23 @@ public class Test {
         List<Integer> listt= new ArrayList<>();
         listt.add(3);
         DetailedOrder dt= new DetailedOrder("Oggetto di test",10.00,listt,9);
-        //dt.setId("33");
         repo.insert(dt);
         return Collections.singletonList(dt.toString());
     }
     @GetMapping("mongoread")
-        public List<Document> mongoread(){
-       List< Document> responseDoc= repo.searchBaseOrderById("6");
+        public List<DetailedOrder> mongoread(){
+       List< DetailedOrder> responseDoc= repo.searchBaseOrderById("6");
         return responseDoc;
         }
     @GetMapping("mongoupd")
-    public List<Document> mongoupd(){
-        List< Document> responseDoc= repo.searchBaseOrderById("6");
+    public DetailedOrder mongoupd(){
+        List<DetailedOrder> responseDoc= repo.searchBaseOrderById("5555");
+        responseDoc.get(0).getBaseOrder().setDescription("oggetto modificato!!!!!!!!!!");
+        ObjectId test = new ObjectId("629df5716d228f48d1ef6097");
+        System.out.println(test.getTimestamp());
 
-        return responseDoc;
+        System.out.println(responseDoc.toString());
+        return repo.save(responseDoc.get(0));
     }
 
     @GetMapping("mongowrite2")
@@ -65,7 +69,7 @@ public class Test {
         listt.add(3);
         DetailedOrder dt= new DetailedOrder("Oggetto di test",10.00,listt,9);
         //dt.setId("33");
-        return Collections.singletonList(dt.returnBaseOrder());
+        return Collections.singletonList(dt.getBaseOrder().toString());
 
     }
 }

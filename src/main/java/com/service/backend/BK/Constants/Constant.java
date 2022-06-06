@@ -24,10 +24,7 @@ public class Constant {
         MINT("Mint"),
         // new from shop, not used
         NEWUNRL("New From Source")
-
-
         ;
-
         public final String label;
         private Quality(String label) {
             this.label=label;

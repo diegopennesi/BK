@@ -17,9 +17,9 @@ public class DetailedOrderService {
     public void insert(DetailedOrder order){
         repo.insert(order);}
 
-    public List<Document> searchBaseOrderById(String DetailOrderId){
+    public List<DetailedOrder> searchBaseOrderById(String DetailOrderId){
         return repo.searchBaseOrderById(DetailOrderId);
     }
-    public Document updateDocument(Document oldDocument){}
+   }
     
-}
+
