@@ -47,6 +47,14 @@ public class Test {
         repo.insert(dt);
         return Collections.singletonList(dt.toString());
     }
+    @GetMapping("yoda")
+    public DetailedOrder yoda(){
+        List<Integer> listt= new ArrayList<>();
+        listt.add(3);
+        DetailedOrder dt= new DetailedOrder("Oggetto di test",10.00,listt,9);
+        System.out.println(dt.toString());
+        return dt;
+    }
     @GetMapping("mongoread")
         public List<DetailedOrder> mongoread(){
        List< DetailedOrder> responseDoc= repo.searchBaseOrderById("6");

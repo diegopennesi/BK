@@ -53,7 +53,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
      private String pseudIncrementalValue(){
          DateTime td=new DateTime();
          StringBuilder sb = new StringBuilder();
-         sb.append(td.getChronology());
+         sb.append(td.getYear());
+         sb.append(td.getDayOfYear());
+         sb.append(td.getMillisOfDay());
          return sb.toString();
      }
 }
