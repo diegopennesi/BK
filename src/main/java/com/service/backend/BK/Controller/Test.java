@@ -1,21 +1,22 @@
 package com.service.backend.BK.Controller;
 
-import com.google.gson.Gson;
-import com.service.backend.BK.Constants.Constant;
-import com.service.backend.BK.Pojo.BaseOrder;
+
 import com.service.backend.BK.Pojo.DetailedOrder;
 import com.service.backend.BK.Repository.DetailedOrderRepository;
 import com.service.backend.BK.Service.Test1Service;
-import org.bson.Document;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
-import org.springframework.boot.json.JsonParser;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,8 @@ public class Test {
     Test1Service testService;
     @Autowired
     DetailedOrderRepository repo;
+    @Autowired
+    private MongoTemplate mongoDb;
 
     @GetMapping
     public String ping(){
@@ -59,6 +62,13 @@ public class Test {
         public List<DetailedOrder> mongoread(){
        List< DetailedOrder> responseDoc= repo.searchBaseOrderById("6");
         return responseDoc;
+        }
+        @GetMapping("mongomax")
+        public DetailedOrder mongoMax(){
+            Query query = new Query();
+            query.with(Sort.by(Sort.Direction.DESC,"baseorder.id"));
+            query.limit(1);
+           return mongoDb.findOne(query,DetailedOrder.class);
         }
     @GetMapping("mongoupd")
     public DetailedOrder mongoupd(){

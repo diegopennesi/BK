@@ -11,4 +11,5 @@ import java.util.List;
 public interface DetailedOrderRepository extends MongoRepository<DetailedOrder,String> {
     @Query("{'baseOrder._id':'?0'}")
     List<DetailedOrder> searchBaseOrderById(String field);
+
 }
