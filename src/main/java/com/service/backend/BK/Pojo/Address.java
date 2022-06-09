@@ -1,12 +1,14 @@
 package com.service.backend.BK.Pojo;
 
+import com.google.gson.Gson;
+
 public class Address {
 
     private String country;
     private String state;
-    private String City;
+    private String city;
     private String adress1;
-    private String adress2;
+    private String note;
     private String cap;
 
     public String getCountry() {
@@ -26,11 +28,11 @@ public class Address {
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
     public String getAdress1() {
@@ -41,12 +43,12 @@ public class Address {
         this.adress1 = adress1;
     }
 
-    public String getAdress2() {
-        return adress2;
+    public String getNote() {
+        return note;
     }
 
-    public void setAdress2(String adress2) {
-        this.adress2 = adress2;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getCap() {
@@ -55,5 +57,20 @@ public class Address {
 
     public void setCap(String cap) {
         this.cap = cap;
+    }
+
+    public String toDocumentFormat(Address address){
+        return new Gson().toJson(address);
+    }
+    @Override
+    public String toString() {
+        return "Address{" +
+                "country='" + country + '\'' +
+                ", state='" + state + '\'' +
+                ", City='" + city + '\'' +
+                ", adress1='" + adress1 + '\'' +
+                ", adress2='" + note + '\'' +
+                ", cap='" + cap + '\'' +
+                '}';
     }
 }

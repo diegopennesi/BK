@@ -5,6 +5,8 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 
 import java.util.List;
@@ -13,7 +15,6 @@ public class DetailedOrder {
 
     @Id
     private String id;
-   // private BaseOrder baseOrder;
     @Field
     private List<Integer> category;
     // 1 junk to 10 Pristine
@@ -69,6 +70,7 @@ public class DetailedOrder {
     public String toString() {
         return "DetailedOrder{" +
                 "id='" + id + '\'' +
+                ", idFull=" + getId().toString()+ '\'' +
                 ", baseOrder='" + getBaseOrder().returnBaseOrder() + '\'' +
                 ", category=" + category +
                 ", quality=" + quality +
@@ -82,6 +84,11 @@ public class DetailedOrder {
 
     public void setBaseOrder(BaseOrder baseOrder) {
         this.baseOrder = baseOrder;
+    }
+
+
+    public String getId() {
+        return id;
     }
 
     public void setId(String id) {

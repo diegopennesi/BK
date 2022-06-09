@@ -1,22 +1,22 @@
 package com.service.backend.BK;
 
-import com.service.backend.BK.Pojo.DetailedOrder;
-import com.service.backend.BK.Repository.DetailedOrderRepository;
-import com.service.backend.BK.Repository.Test1Repository;
+import com.service.backend.BK.Engine.Repository.DetailedOrderRepository;
+import com.service.backend.BK.Engine.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableMongoRepositories
 public class ServiceBkApplication{
 
 	@Autowired
-	Test1Repository Test1Repo;
+	DetailedOrderRepository detailedOrderService;
 	@Autowired
-	DetailedOrderRepository DetailedOrderService;
+	UserRepository userRepository;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceBkApplication.class, args);

@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
      //###############################################################################################################//
      protected  BaseOrder(){}
      protected  BaseOrder(String description, Double desideredPrice) {
-          this.id = pseudIncrementalValue();
           this.description = description;
           this.desideredPrice = desideredPrice;
      }
@@ -50,12 +49,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
           this.id = id;
      }
      //###############################################################################################################//
-     private String pseudIncrementalValue(){
-         DateTime td=new DateTime();
-         StringBuilder sb = new StringBuilder();
-         sb.append(td.getYear());
-         sb.append(td.getDayOfYear());
-         sb.append(td.getMillisOfDay());
-         return sb.toString();
-     }
+
 }
