@@ -84,6 +84,7 @@ public class EngineLogic {
     public boolean addUser(){
         // search into DB if username\fbprofile Exist if true
         User user=createUserTest();
+        //repoUser.save(user);
         repoUser.save(user);
         return false;
     }
