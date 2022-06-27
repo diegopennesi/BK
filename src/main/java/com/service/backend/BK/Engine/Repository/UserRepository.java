@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface UserRepository extends MongoRepository<User,String> {
 
-    List<User> findAllByRealmClassification(int[] realm);
+
 
 }
