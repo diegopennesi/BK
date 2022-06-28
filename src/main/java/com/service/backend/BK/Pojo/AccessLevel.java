@@ -1,8 +1,10 @@
 package com.service.backend.BK.Pojo;
 
 import com.mongodb.lang.Nullable;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@Document("AccessLevel")
 public class AccessLevel {
 
     private int accessLevelId;
@@ -21,9 +23,9 @@ public class AccessLevel {
     // it can be whitelisted or blacklisted
     private Boolean accesslevelReliable;
     @Field
-    private int City;
+    private int castle;
     @Field
-    private int Realm;
+    private int realm;
 
     public AccessLevel() {
     }
@@ -94,19 +96,19 @@ public class AccessLevel {
         this.accesslevelReliable = accesslevelReliable;
     }
 
-    public int getCity() {
-        return City;
+    public int getCastle() {
+        return castle;
     }
 
-    public void setCity(int city) {
-        City = city;
+    public void setCastle(int castle) {
+        this.castle = castle;
     }
 
     public int getRealm() {
-        return Realm;
+        return realm;
     }
 
     public void setRealm(int realm) {
-        Realm = realm;
+        this.realm = realm;
     }
 }

@@ -1,11 +1,13 @@
 package com.service.backend.BK.Engine;
 
 import com.google.gson.Gson;
+import com.service.backend.BK.Engine.Repository.AccessLevelRepository;
 import com.service.backend.BK.Engine.Repository.UserRepository;
 import com.service.backend.BK.Pojo.AccessLevel;
 import com.service.backend.BK.Pojo.Address;
 import com.service.backend.BK.Pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,7 +18,12 @@ public class EngineLogic {
     @Autowired
     UserRepository repoUser;
     @Autowired
+    AccessLevelRepository repoAccess;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
     Dao dao;
+
 
     User createUserTest(){
         // access level are realm resized, every realm can customize access level, they will came from DB
@@ -35,7 +42,7 @@ public class EngineLogic {
         r.setAddresses(addresList);
         Map<Integer,Integer> realmCity = new HashMap<>();
         realmCity.put(1,1);
-        r.setCityCastleAccess(realmCity);
+        r.setRealmCastleAccess(realmCity);
         r.setLastJWT("JWT_TEST");
         r.setLastLogin(new Date());
         return r;
@@ -59,7 +66,8 @@ public class EngineLogic {
         ac.setAccesslevelMaximumAmountOrderRequest(1);
         ac.setAccesslevelMaximumAmountOrderRequest(1);
         ac.setAccesslevelReliable(true);
-        ac.setCity(1);
+        ac.setCastle(1);
+        ac.setRealm(1);
         List<AccessLevel> response= new ArrayList<>();
         response.add(ac);
         return response;
@@ -69,13 +77,22 @@ public class EngineLogic {
     ////~~~REGISTER CONTROLLER~~~////
     public boolean changePassword(Map map) throws Exception {
         User a = gson.fromJson(gson.toJson(map), User.class);
-        dao.getUserByUsername(a.getUsername(), false);
+        User b = dao.getUserByUsername(a.getUsername(), false);
+        a.setPassword(b.getPassword());
         repoUser.save(a);
         return true;
     }
     public boolean registerNewUser(Map map) throws Exception {
         // we will recive MultivaluedMAP and then convert it into our MODEL
         User a = gson.fromJson(gson.toJson(map), User.class);
+        List<AccessLevel> listAcceslevel = new ArrayList<>();
+        // assuming now just 1 access level, we need to iterate for each entry
+        listAcceslevel.add(dao.getAccessLevelByIDByRealmByCastle(
+                (int)map.get("LevelOfAccess"),
+                (int)map.get("realm"),
+                (int)map.get("castle"),false));
+        if(listAcceslevel.get(0) == null) throw new Exception("No access level Found!");
+        a.setAccessLevel(listAcceslevel);
         dao.getUserByUsername(a.getUsername(), true);
         repoUser.save(a);
         return true;
@@ -99,6 +116,21 @@ public class EngineLogic {
         User s = dao.getUserByUsername(username,false);
         Gson gson = new Gson();
         return gson.fromJson(s.getAddresses().get(0),Address.class);
+    }
+    public boolean putAccessLevel(Map request){
+        // search into DB if username\fbprofile Exist if true
+        AccessLevel a = gson.fromJson(gson.toJson(request), AccessLevel.class);
+        a.setAccessLevelId(dao.findGreaterAMONGUS((int)request.get("castle"),(int)request.get("realm"),false));
+        repoAccess.save(a);
+        return true;
+    }
+    @Deprecated
+    public boolean putAccessLevel(){
+        // search into DB if username\fbprofile Exist if true
+        AccessLevel accessLevel=createUserTest().getAccessLevel().get(0);
+        //repoUser.save(user);
+        repoAccess.save(accessLevel);
+        return false;
     }
 
 }

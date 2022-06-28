@@ -1,5 +1,6 @@
 package com.service.backend.BK.Pojo;
 
+import com.mongodb.lang.NonNull;
 import com.mongodb.lang.Nullable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -27,12 +28,16 @@ public class User {
     private List<AccessLevel> accessLevel;
     //user minimal address
     private List<String> addresses;
-    private Map<Integer,Integer> cityCastleAccess;
+    private Map<Integer,Integer> realmCastleAccess;
     private String lastJWT;
     private Date lastLogin;
     private HashMap<String,BaseOrder> orderListSimple;
+
+    public User(String name, String surname,String profileFb){
+        this.privateInfo = new PrivateInfo(name,surname,profileFb);
+    }
     @PersistenceConstructor
-    public User(String id, String username, String password, Boolean sesntiviveBuyAllowed, boolean isActive, boolean isBanned, @Nullable PrivateInfo privateInfo, List<AccessLevel> accessLevel, List<String> addresses, Map<Integer,Integer> cityCastleAccess, @Nullable String lastJWT, @Nullable Date lastLogin, @Nullable HashMap<String, BaseOrder> orderListSimple) {
+    public User(String id, String username, String password, Boolean sesntiviveBuyAllowed, boolean isActive, boolean isBanned, @Nullable PrivateInfo privateInfo, List<AccessLevel> accessLevel, List<String> addresses, Map<Integer,Integer> realmCastleAccess, @Nullable String lastJWT, @Nullable Date lastLogin, @Nullable HashMap<String, BaseOrder> orderListSimple) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -42,7 +47,7 @@ public class User {
         this.privateInfo = privateInfo;
         this.accessLevel = accessLevel;
         this.addresses = addresses;
-        this.cityCastleAccess = cityCastleAccess;
+        this.realmCastleAccess = realmCastleAccess;
         this.lastJWT = lastJWT;
         this.lastLogin = lastLogin;
         this.orderListSimple = orderListSimple;
@@ -125,11 +130,11 @@ public class User {
     public void setAccessLevel(List<AccessLevel> accessLevel) {
         this.accessLevel = accessLevel;
     }
-    public Map<Integer,Integer> getCityCastleAccess() {
-        return cityCastleAccess;
+    public Map<Integer,Integer> getRealmCastleAccess() {
+        return realmCastleAccess;
     }
-    public void setCityCastleAccess(Map<Integer,Integer> cityCastleAccess) {
-        this.cityCastleAccess = cityCastleAccess;
+    public void setRealmCastleAccess(Map<Integer,Integer> realmCastleAccess) {
+        this.realmCastleAccess = realmCastleAccess;
     }
     public HashMap<String, BaseOrder> getOrderListSimple() {
         return orderListSimple;
@@ -139,11 +144,6 @@ public class User {
         this.orderListSimple = orderListSimple;
     }
     //################################################################################################################//
-
-    public User(String name, String surname,String profileFb){
-        this.privateInfo = new PrivateInfo(name,surname,profileFb);
-    }
-
 
     @Override
     public String toString() {
@@ -157,7 +157,7 @@ public class User {
                 ", privateInfo=" + privateInfo +
                 ", accessLevel=" + accessLevel +
                 ", addresses=" + addresses +
-                ", realmClassification=" + cityCastleAccess + // todo print inline map!
+                ", realmClassification=" + realmCastleAccess + // todo print inline map!
                 ", lastJWT='" + lastJWT + '\'' +
                 ", lastLogin=" + lastLogin +
                 ", orderListSimple=" + orderListSimple +
