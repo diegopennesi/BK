@@ -5,6 +5,7 @@ import com.service.backend.BK.Engine.Repository.AccessLevelRepository;
 import com.service.backend.BK.Engine.Repository.UserRepository;
 import com.service.backend.BK.Pojo.AccessLevel;
 import com.service.backend.BK.Pojo.Address;
+import com.service.backend.BK.Pojo.RealmCastle;
 import com.service.backend.BK.Pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -124,6 +125,10 @@ public class EngineLogic {
         repoAccess.save(a);
         return true;
     }
+    public Map searchAccessLevel(Map request){
+    dao.searchAccessLevel(request);
+    return null;
+    }
     @Deprecated
     public boolean putAccessLevel(){
         // search into DB if username\fbprofile Exist if true
@@ -133,4 +138,11 @@ public class EngineLogic {
         return false;
     }
 
+
+
+
+
+    private <T> Object fromMapToModel(Map request, Class<T> instance){
+        return gson.fromJson(gson.toJson(request),instance);
+    }
 }

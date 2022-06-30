@@ -9,7 +9,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 @Service
 public class Dao {
 
@@ -60,5 +65,21 @@ public class Dao {
             throw new Exception("Entity Already present!");
         }
         return response;
+    }
+    public AccessLevel searchAccessLevel(Map<String,Integer[]> request){
+        Query q = new Query();
+        Criteria c = new Criteria();
+        request.forEach((k,v)-> {
+            for (int i: Arrays.asList(v)
+                 ) {
+                System.out.println(k+"-"+i);
+                // lets' change it to criteria add HERE!
+            }
+        });
+
+        // for eache key set Realm and iterate for each Castle
+        // add a new Criteria here Realm x Castle for every combination in every KeySet
+        // q.addCriteria(c.andOperator(c.where()))
+        return null;
     }
 }
