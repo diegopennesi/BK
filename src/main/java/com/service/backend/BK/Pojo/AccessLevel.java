@@ -1,12 +1,15 @@
 package com.service.backend.BK.Pojo;
 
 import com.mongodb.lang.Nullable;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("AccessLevel")
 public class AccessLevel {
 
+    @Id
+    private String id;
     private int accessLevelId;
     private String accessLevelDescription;
     // limit of how many request can user have
@@ -22,6 +25,7 @@ public class AccessLevel {
     @Nullable // accesselevel dosen't require payment before turn order from pending to active.
     // it can be whitelisted or blacklisted
     private Boolean accesslevelReliable;
+    private String createdBy;
     @Field
     private int castle;
     @Field
@@ -110,5 +114,25 @@ public class AccessLevel {
 
     public void setRealm(int realm) {
         this.realm = realm;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessLevel{" +
+                "accessLevelId=" + accessLevelId +
+                ", accessLevelDescription='" + accessLevelDescription + '\'' +
+                ", accessLevelPendingOrderLimit=" + accessLevelPendingOrderLimit +
+                ", accessLevelActiveOrderLimit=" + accessLevelActiveOrderLimit +
+                ", accesslevelUnFulfilledOrderLimit=" + accesslevelUnFulfilledOrderLimit +
+                ", accesslevelMaximumAmountPendingRequest=" + accesslevelMaximumAmountPendingRequest +
+                ", accesslevelMaximumAmountOrderRequest=" + accesslevelMaximumAmountOrderRequest +
+                ", accesslevelReliable=" + accesslevelReliable +
+                ", castle=" + castle +
+                ", realm=" + realm +
+                '}';
     }
 }

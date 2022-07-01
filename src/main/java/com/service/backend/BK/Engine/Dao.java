@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,9 @@ public class Dao {
     }
 
 
-
     /////////////////////////////////
+    // query in order to check the increment, we could write into another document, but it would be non secure way to
+    // track internal incremental ID.
     public int findGreaterAMONGUS(int castle,int realm,boolean nullable){
         Query q = new Query();
         q.addCriteria(new Criteria().andOperator(
@@ -66,20 +68,19 @@ public class Dao {
         }
         return response;
     }
-    public AccessLevel searchAccessLevel(Map<String,Integer[]> request){
+    public List<AccessLevel> searchAccessLevel(Map<String,Integer[]> request){
         Query q = new Query();
         Criteria c = new Criteria();
-        request.forEach((k,v)-> {
-            for (int i: Arrays.asList(v)
-                 ) {
-                System.out.println(k+"-"+i);
-                // lets' change it to criteria add HERE!
-            }
-        });
-
-        // for eache key set Realm and iterate for each Castle
-        // add a new Criteria here Realm x Castle for every combination in every KeySet
-        // q.addCriteria(c.andOperator(c.where()))
-        return null;
+        List<AccessLevel> response = new ArrayList<>();
+        for (String k : request.keySet()
+             ) {
+            q.addCriteria(c.andOperator(
+                    Criteria.where("realm").is(Integer.parseInt(k)),
+                    Criteria.where("castle").in(Arrays.asList(request.get(k)))));
+            response.addAll(db.find(q,AccessLevel.class));
+            q=new Query();
+            c=new Criteria();
+        }
+        return response;
     }
 }
