@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import java.util.Map.Entry;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -34,8 +35,26 @@ public class Dao {
         User respose= db.findOne(q,User.class);
         // Nullable check if i need or not a return NULL for my search
         if (respose == null && !nullable){// there is no record, i do not accept nullable record. I NEED a record!
+            throw new Exception("No Entity Found!");
         }
         else if (respose != null && nullable){
+            throw new Exception("Entity Already present!");
+        }
+        return respose;
+    }
+    public User getUserByFilters(Map request, boolean nullable) throws Exception {
+        Query q = new Query();
+        Criteria c = new Criteria();
+        // for each key get keysimplename and value into criteria is
+        request.forEach((k, v) ->
+                q.addCriteria((
+                        Criteria.where(k.toString()).is(v)
+                )));
+        User respose = db.findOne(q, User.class);
+        if (respose == null && !nullable) {// no record, and i need a record
+            throw new Exception("No Entity Found!");
+        }
+        else if (respose != null && nullable) {// record is present, i need nullable, error
             throw new Exception("Entity Already present!");
         }
         return respose;
@@ -69,6 +88,9 @@ public class Dao {
         return response;
     }
     public List<AccessLevel> searchAccessLevel(Map<String,Integer[]> request){
+        // this method should be allow admin to see just own Realm x City it dosen't
+        // perform too well for an cross-Realm Admin.
+        // admin query TBD in v2
         Query q = new Query();
         Criteria c = new Criteria();
         List<AccessLevel> response = new ArrayList<>();

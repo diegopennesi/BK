@@ -103,6 +103,12 @@ public class EngineLogic {
         repoUser.save(a);
         return true;
     }
+    public String login (Map request) throws Exception{
+        User a=dao.getUserByFilters(request,false);
+        //do something over JWT token
+        // SAVE LAST ACCESS
+        return gson.toJson(a);
+    }
 
     public boolean addUser() {
         // search into DB if username\fbprofile Exist if true

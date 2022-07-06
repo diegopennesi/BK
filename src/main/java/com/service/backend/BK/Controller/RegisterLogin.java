@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("register")
@@ -34,10 +34,18 @@ public class RegisterLogin {
        }
         return ResponseEntity.status(200).body(response);
     }
-    @GetMapping
-    public ResponseEntity<String> searchUser(@RequestBody Map request) throws Exception{
-        assert request.containsKey("username"):("Missing Fileds!");
-        return ResponseEntity.status(200).body("response");
+    @GetMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map request) throws Exception{
+        String response="";
+        try{
+            checkMapV2(request, Arrays.asList("username","password"));
+            request.keySet().retainAll(new HashSet<>(Arrays.asList("username", "password")));
+           // request.forEach((k,v)-> System.out.println(k+"."+v));
+            response=engine.login(request);
+        }catch (AssertionError | Exception x){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(x.getMessage());
+        }
+        return ResponseEntity.status(200).body(response);
     }
 
         private void checkMap(Map map) throws AssertionError{
@@ -48,5 +56,11 @@ public class RegisterLogin {
            assert map.containsKey("addresses"):("Missing Fileds!");
            assert map.containsKey("castle"):("Missing Fileds!");
            assert map.containsKey("realm"):("Missing Fileds!");
+        }
+        private void checkMapV2(Map request, List<String> tocheck){
+            for (String fieldTocheck: tocheck
+                 ) {
+                assert request.containsKey(fieldTocheck):("Missing Fileds!");
+            }
         }
 }
