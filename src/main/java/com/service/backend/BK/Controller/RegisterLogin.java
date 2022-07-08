@@ -50,13 +50,13 @@ public class RegisterLogin {
         return ResponseEntity.status(200).body(response);
     }
     @PostMapping(value = "/activate", produces = "application/json")
-public ResponseEntity<String> activeAndBan(@RequestBody Map request) throws Exception{
-        String response="";
-        try{
-            checkMapV2(request,Arrays.asList("id"));
-            request.keySet().retainAll(new HashSet<>(Arrays.asList("id", "active","banned")));
-            response=engine.activationAndBan(request);
-        }catch (AssertionError | Exception x){
+    public ResponseEntity<String> activeAndBan(@RequestBody Map request) throws Exception {
+        String response = "";
+        try {
+            checkMapV2(request, Arrays.asList("id"));
+            request.keySet().retainAll(new HashSet<>(Arrays.asList("id", "active", "banned")));
+            response = engine.activationAndBan(request);
+        } catch (AssertionError | Exception x) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(x.getMessage());
         }
         return ResponseEntity.status(200).body(response);
