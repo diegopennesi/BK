@@ -42,25 +42,39 @@ public class Dao {
         }
         return respose;
     }
-    public User getUserByFilters(Map request, boolean nullable) throws Exception {
+    public List<User> getUserByFilters(Map request, boolean nullable) throws Exception {
         Query q = new Query();
         Criteria c = new Criteria();
-        // for each key get keysimplename and value into criteria is
         request.forEach((k, v) ->
-                q.addCriteria((
-                        Criteria.where(k.toString()).is(v)
-                )));
-        User respose = db.findOne(q, User.class);
+                q.addCriteria((Criteria.where(demapper(k)).is(v))));
+        List<User> respose = db.find(q, User.class);
         if (respose == null && !nullable) {// no record, and i need a record
             throw new Exception("No Entity Found!");
-        }
-        else if (respose != null && nullable) {// record is present, i need nullable, error
+        } else if (respose != null && nullable) {// record is present, i need nullable, error
             throw new Exception("Entity Already present!");
         }
         return respose;
     }
-
-
+    private String demapper(Object k) {
+        String response = "";
+        switch (k.toString()) {
+            case "realm":
+                response = "accessLevel.realm";
+                break;
+            case "castle":
+                response = "accessLevel.castle";
+                break;
+            case "accessLevelId":
+                response = "accessLevel._id";
+                break;
+            case "facebookProfile":
+                response = "privateInfo.facebookProfile";
+                break;
+            default:
+                response = k.toString();
+        }
+        return response;
+    }
     /////////////////////////////////
     // query in order to check the increment, we could write into another document, but it would be non secure way to
     // track internal incremental ID.

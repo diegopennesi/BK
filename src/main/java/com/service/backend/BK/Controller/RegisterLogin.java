@@ -1,14 +1,15 @@
 package com.service.backend.BK.Controller;
-
 import com.service.backend.BK.Engine.EngineLogic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
+import javax.websocket.server.PathParam;
 import java.util.*;
-import java.util.stream.Stream;
-
 @RestController
 @RequestMapping("register")
 public class RegisterLogin {
@@ -34,19 +35,33 @@ public class RegisterLogin {
        }
         return ResponseEntity.status(200).body(response);
     }
-    @GetMapping("/login")
+    @GetMapping(value = "/login",produces = "application/json" )
     public ResponseEntity<String> login(@RequestBody Map request) throws Exception{
         String response="";
         try{
             checkMapV2(request, Arrays.asList("username","password"));
             request.keySet().retainAll(new HashSet<>(Arrays.asList("username", "password")));
-           // request.forEach((k,v)-> System.out.println(k+"."+v));
             response=engine.login(request);
+        }catch (AssertionError | Exception x){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(x.getMessage());
+        }
+        HttpHeaders header=new HttpHeaders();
+
+        return ResponseEntity.status(200).body(response);
+    }
+    @PostMapping(value = "/activate", produces = "application/json")
+public ResponseEntity<String> activeAndBan(@RequestBody Map request) throws Exception{
+        String response="";
+        try{
+            checkMapV2(request,Arrays.asList("id"));
+            request.keySet().retainAll(new HashSet<>(Arrays.asList("id", "active","banned")));
+            response=engine.activationAndBan(request);
         }catch (AssertionError | Exception x){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(x.getMessage());
         }
         return ResponseEntity.status(200).body(response);
     }
+
 
         private void checkMap(Map map) throws AssertionError{
            assert map.containsKey("username"):("Missing Fileds!");

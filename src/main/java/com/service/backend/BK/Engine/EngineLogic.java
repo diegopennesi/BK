@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -103,13 +104,30 @@ public class EngineLogic {
         repoUser.save(a);
         return true;
     }
-    public String login (Map request) throws Exception{
-        User a=dao.getUserByFilters(request,false);
+
+    public String login(Map request) throws Exception {
+        User a = dao.getUserByFilters(request, false).get(0);
         //do something over JWT token
         // SAVE LAST ACCESS
+        if (a.isBanned() || !a.isActive()) {
+            throw new Exception("User not active or Banned");
+        }
         return gson.toJson(a);
     }
 
+    public String activationAndBan(Map request) throws Exception {
+        User a = dao.getUserByFilters(new HashMap<String, String>() {{
+            put("_id", request.get("id").toString());
+        }}, false).get(0);
+        try {
+            a.setActive(Boolean.parseBoolean(request.get("active").toString()));
+            a.setBanned(Boolean.parseBoolean(request.get("banned").toString()));
+        } catch (NullPointerException ignore) {
+            // a more refined method for a more refined age MUST me made...
+        }
+        repoUser.save(a);
+        return "ok";
+    }
     public boolean addUser() {
         // search into DB if username\fbprofile Exist if true
         User user = createUserTest();
@@ -173,5 +191,6 @@ public class EngineLogic {
     private <T> Object fromMapToModel(Map request, Class<T> instance) {
         return gson.fromJson(gson.toJson(request), instance);
     }
+
 
 }
